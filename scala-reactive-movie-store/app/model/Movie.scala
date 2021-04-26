@@ -2,7 +2,12 @@ package model
 
 import org.joda.time.DateTime
 import play.api.libs.json.{Format, Json}
-import reactivemongo.bson.{BSONDateTime, BSONDocument, BSONDocumentReader, BSONDocumentWriter, BSONObjectID}
+import reactivemongo.play.json._
+import reactivemongo.bson.BSONObjectID
+import reactivemongo.bson._
+import play.api.libs.json.JodaWrites._
+import play.api.libs.json.JodaReads._
+/* Optimizing the imports leads a build error. */
 
 case class Movie (
                    _id: Option[BSONObjectID],
@@ -11,11 +16,10 @@ case class Movie (
                    title: String,
                    description: String
                  )
-
 object Movie {
 
   /* Creating the JSON Format for the model */
-  implicit val movieFormat : Format[Movie] = Json.format[Movie]
+  implicit val movieFormat: Format[Movie] = Json.format[Movie]
 
   /* BSON Reader to Object */
   implicit object MovieBSONReader extends BSONDocumentReader[Movie] {
